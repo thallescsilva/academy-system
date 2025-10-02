@@ -1,0 +1,101 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Custom styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.sidenav-container {
+  height: calc(100vh - 64px);
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.sidenav-content {
+  padding: 16px;
+}
+
+.card {
+  margin-bottom: 16px;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #f44336;
+}
+
+.success-message {
+  color: #4caf50;
+}
+
+.error-message {
+  color: #f44336;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 8px;
+  }
+  
+  .sidenav {
+    width: 200px;
+  }
+  
+  .sidenav-content {
+    padding: 8px;
+  }
+  
+  .form-container {
+    max-width: 100%;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+}

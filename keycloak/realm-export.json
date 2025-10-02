@@ -1,0 +1,90 @@
+{
+  "realm": "academico",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "attributes": {
+    "frontendUrl": "http://localhost:4200",
+    "cors.allow.credentials": "true",
+    "cors.allowed.origins": "http://localhost:4200,http://localhost:8080",
+    "cors.allowed.headers": "Accept,Authorization,Content-Type,X-Requested-With,Origin",
+    "cors.allowed.methods": "GET,POST,PUT,DELETE,OPTIONS"
+  },
+  "roles": {
+    "realm": [
+      { "name": "ADMIN", "description": "Administrador" },
+      { "name": "COORDINATOR", "description": "Coordenador" },
+      { "name": "PROFESSOR", "description": "Professor" },
+      { "name": "STUDENT", "description": "Aluno" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "academico-backend",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "bearerOnly": true,
+      "redirectUris": ["*"]
+    },
+    {
+      "clientId": "academico-frontend",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:4200/*", "http://localhost:4200"],
+      "webOrigins": ["http://localhost:4200", "http://localhost:4200/*"],
+      "attributes": {
+        "access.token.lifespan": "300",
+        "client.session.idle.timeout": "1800",
+        "client.session.max.lifespan": "36000"
+      },
+      "defaultClientScopes": ["web-origins", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin@academico.com",
+      "email": "admin@academico.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "admin123", "temporary": false }],
+      "realmRoles": ["ADMIN"]
+    },
+    {
+      "username": "coordenador@academico.com",
+      "email": "coordenador@academico.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "coord123", "temporary": false }],
+      "realmRoles": ["COORDINATOR"]
+    },
+    {
+      "username": "professor@academico.com",
+      "email": "professor@academico.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "prof123", "temporary": false }],
+      "realmRoles": ["PROFESSOR"]
+    },
+    {
+      "username": "aluno@academico.com",
+      "email": "aluno@academico.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "aluno123", "temporary": false }],
+      "realmRoles": ["STUDENT"]
+    }
+  ]
+}
+

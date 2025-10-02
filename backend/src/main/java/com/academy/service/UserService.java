@@ -144,7 +144,6 @@ public class UserService {
         UserEntity entity = userRepository.findByIdOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + id));
 
- para outro usuário
         Optional<UserEntity> existingUser = userRepository.findByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && !existingUser.get().id.equals(id)) {
             throw new IllegalArgumentException("Email já cadastrado: " + userDTO.getEmail());

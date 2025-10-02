@@ -55,7 +55,7 @@ public class DisciplineController {
 
     @POST
     @Operation(summary = "Create new discipline", description = "Create a new discipline")
-    // @RolesAllowed("COORDINATOR")
+    @RolesAllowed("COORDINATOR")
     public Response createDiscipline(DisciplineDTO disciplineDTO) {
         try {
             DisciplineDTO createdDiscipline = disciplineService.create(disciplineDTO);
@@ -70,7 +70,7 @@ public class DisciplineController {
     @PUT
     @Path("/{id}")
     @Operation(summary = "Update discipline", description = "Update an existing discipline")
-    // @RolesAllowed("COORDINATOR")
+    @RolesAllowed("COORDINATOR")
     public Response updateDiscipline(@PathParam("id") Long id, DisciplineDTO disciplineDTO) {
         try {
             DisciplineDTO updatedDiscipline = disciplineService.update(id, disciplineDTO);
@@ -90,7 +90,7 @@ public class DisciplineController {
     @DELETE
     @Path("/{id}")
     @Operation(summary = "Delete discipline", description = "Delete a discipline by ID")
-    // @RolesAllowed("COORDINATOR")
+    @RolesAllowed("COORDINATOR")
     public Response deleteDiscipline(@PathParam("id") Long id) {
         try {
             boolean deleted = disciplineService.delete(id);

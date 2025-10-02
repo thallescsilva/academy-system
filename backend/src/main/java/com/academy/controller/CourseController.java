@@ -25,7 +25,7 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Courses", description = "Operações relacionadas a cursos")
-// @RolesAllowed("COORDINATOR")
+@RolesAllowed("COORDINATOR")
 public class CourseController {
 
     @Inject

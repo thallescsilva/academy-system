@@ -1,6 +1,6 @@
 # Sistema de Administração Acadêmica
 
-Sistema web completo para administração de alunos, professores e cursos, desenvolvido com Quarkus (Java 21) no backend e Angular 15+ no frontend.
+Sistema web completo para administração de alunos, professores e cursos que desenvolvi com Quarkus (Java 21) no backend e Angular 15+ no frontend.
 
 ## 🏗️ Arquitetura
 
@@ -63,7 +63,7 @@ Sistema web completo para administração de alunos, professores e cursos, desen
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/academy-system.git
+git clone https://github.com/thallescsilva/academy-system.git
 cd academy-system
 ```
 
@@ -112,23 +112,23 @@ O sistema utiliza autenticação mock baseada no email. Você pode fazer login c
 - **Java 21**
 - **Quarkus Framework 3.6.0**
 - **JPA/Hibernate com Panache**
-- **MapStruct 1.5.5** (mapeamento DTO ↔ Entity)
+- **MapStruct 1.5.5**
 - **PostgreSQL 15**
-- **Flyway** (migrações)
+- **Flyway**
 - **Hibernate Validator**
 - **OpenAPI/Swagger**
-- **JUnit 5 + RestAssured** (testes)
+- **JUnit 5 + RestAssured**
 
 ### Frontend
-- **Angular 15+ (standalone components)**
+- **Angular 15+**
 - **Angular Material**
 - **RxJS**
 - **TypeScript 4.9**
-- **Karma/Jasmine** (testes)
+- **Karma/Jasmine**
 
 ### DevOps
 - **Docker & Docker Compose**
-- **Nginx** (servir frontend em produção)
+- **Nginx**
 - **Multi-stage Docker builds**
 
 ## 📋 Funcionalidades Implementadas
@@ -211,23 +211,23 @@ O sistema utiliza autenticação mock baseada no email. Você pode fazer login c
 
 **Estado Atual:**
 - ✅ Validação de entrada nos DTOs
-- ✅ CORS configurado
+- ✅ CORS que configurei
 - ✅ SQL Injection prevenido (JPA/Panache)
 - ✅ Autenticação mock com persistência (localStorage)
 - ⚠️ **Keycloak desabilitado** (veja seção "Desafios com Keycloak")
 
 **Observação de Segurança:**
-> A aplicação está configurada com autenticação mock para fins de demonstração. Em produção, recomenda-se habilitar o Keycloak ou outra solução de autenticação robusta.
+> Configurei a aplicação com autenticação mock para fins de demonstração. Em produção, recomendo habilitar o Keycloak ou outra solução de autenticação robusta.
 
 ## 🚧 Desafios com Keycloak
 
-Durante o desenvolvimento, tentamos integrar o Keycloak para autenticação e autorização. A configuração foi bem-sucedida no **backend**, com:
+Durante o desenvolvimento, tentei integrar o Keycloak para autenticação e autorização. A configuração foi bem-sucedida no **backend**, com:
 
 ✅ **Backend Keycloak (Sucesso):**
-- Realm `academico` configurado
+- Realm `academico` que configurei
 - Client `academico-backend` (confidencial)
 - 4 papéis (ADMIN, COORDINATOR, PROFESSOR, STUDENT)
-- 4 usuários de teste pré-configurados
+- 4 usuários de teste que pré-configurei
 - Endpoints protegidos com `@RolesAllowed`
 - Validação de JWT funcionando
 
@@ -254,7 +254,7 @@ Durante o desenvolvimento, tentamos integrar o Keycloak para autenticação e au
 - **Resultado**: Funcionalidade não implementada completamente
 
 ### Solução Adotada
-Devido aos problemas de integração frontend-backend com Keycloak e limitações de tempo, optamos por:
+Devido aos problemas de integração frontend-backend com Keycloak e limitações de tempo, optei por:
 
 1. **Desabilitar Keycloak** no backend (comentado em `application.properties` e `pom.xml`)
 2. **Implementar autenticação mock** no frontend (`KeycloakService` com localStorage)
@@ -302,7 +302,7 @@ cd backend
 ./mvnw test jacoco:report
 ```
 
-**Testes Implementados:**
+**Testes que Implementei:**
 - ✅ Testes unitários de entidades
 - ✅ Testes de serviços (UserService, CourseService, etc.)
 - ✅ Testes de DTOs
@@ -319,7 +319,7 @@ npm test
 npm run test:coverage
 ```
 
-**Testes Implementados:**
+**Testes que Implementei:**
 - ✅ Testes de modelos
 - ✅ Testes de serviços
 - ✅ Testes de componentes
@@ -522,9 +522,9 @@ docker run --rm -v unifor_postgres_data:/data -v $(pwd):/backup alpine tar czf /
 
 **Observação Importante:**
 
-Os commits deste repositório **não seguem a linha de tempo real** do desenvolvimento. Devido à perda de acesso ao repositório original, os commits foram segregados e reorganizados para demonstrar a evolução incremental do projeto.
+Os commits deste repositório **não seguem a linha de tempo real** do desenvolvimento. Devido à perda de acesso ao repositório original, reorganizei os commits para demonstrar a evolução incremental do projeto.
 
-Os commits foram estruturados de forma a:
+Estruturei os commits de forma a:
 - Mostrar uma progressão lógica de desenvolvimento
 - Separar mudanças por contexto funcional
 - Manter mensagens em inglês (padrão da indústria)
@@ -558,11 +558,11 @@ chore: tarefas de build, configs
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido para fins educacionais.
+Desenvolvi este projeto para fins educacionais.
 
 ## 👨‍💻 Autor
 
-Desenvolvido como projeto acadêmico para a disciplina de Desenvolvimento Web.
+Desenvolvi este projeto como trabalho acadêmico para a disciplina de Desenvolvimento Web.
 
 ---
 

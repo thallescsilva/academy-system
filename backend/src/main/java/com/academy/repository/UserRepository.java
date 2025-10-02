@@ -1,6 +1,7 @@
 package com.academy.repository;
 
 import com.academy.entity.UserEntity;
+import com.academy.enums.UserRole;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -30,7 +31,7 @@ public class UserRepository implements PanacheRepository<UserEntity> {
      * @param role Papel do usuário
      * @return Lista de usuários com o papel especificado
      */
-    public List<UserEntity> findByRole(UserEntity.UserRole role) {
+    public List<UserEntity> findByRole(UserRole role) {
         return find("role", role).list();
     }
 
@@ -49,7 +50,7 @@ public class UserRepository implements PanacheRepository<UserEntity> {
      * @param role Papel do usuário
      * @return Lista de usuários ativos com o papel especificado
      */
-    public List<UserEntity> findActiveUsersByRole(UserEntity.UserRole role) {
+    public List<UserEntity> findActiveUsersByRole(UserRole role) {
         return find("active = true and role = ?1", role).list();
     }
 

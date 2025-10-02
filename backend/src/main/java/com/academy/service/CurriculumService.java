@@ -5,7 +5,7 @@ import com.academy.entity.CurriculumEntity;
 import com.academy.entity.CourseEntity;
 import com.academy.entity.DisciplineEntity;
 import com.academy.entity.UserEntity;
-import com.academy.entity.UserRole;
+import com.academy.enums.UserRole;
 import com.academy.mapper.CurriculumMapper;
 import com.academy.repository.CurriculumRepository;
 import jakarta.enterprise.context.ApplicationScoped;

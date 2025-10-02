@@ -2,6 +2,7 @@ package com.academy.controller;
 
 import com.academy.dto.UserDTO;
 import com.academy.entity.UserEntity;
+import com.academy.enums.UserRole;
 import com.academy.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -120,7 +121,7 @@ public class UserController {
             content = @Content(schema = @Schema(implementation = UserDTO.class)))
     public Response findByRole(@PathParam("role") String role) {
         try {
-            UserEntity.UserRole userRole = UserEntity.UserRole.valueOf(role.toUpperCase());
+            UserRole userRole = UserRole.valueOf(role.toUpperCase());
             List<UserDTO> users = userService.findByRole(userRole);
             return Response.ok(users).build();
         } catch (IllegalArgumentException e) {

@@ -1,5 +1,6 @@
 package com.academy.entity;
 
+import com.academy.enums.UserRole;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -83,23 +84,4 @@ public class UserEntity extends PanacheEntity {
                 '}';
     }
 
-    /**
-     * Enum que define os papéis dos usuários no sistema
-     */
-    public enum UserRole {
-        ADMIN("Administrador"),
-        COORDINATOR("Coordenador"),
-        PROFESSOR("Professor"),
-        STUDENT("Aluno");
-
-        private final String description;
-
-        UserRole(String description) {
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-    }
 }

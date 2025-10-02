@@ -1,6 +1,7 @@
 package com.academy.dto;
 
 import com.academy.entity.UserEntity;
+import com.academy.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ public class UserDTO {
     public String password;
 
     @NotNull(message = "Role is required")
-    public UserEntity.UserRole role;
+    public UserRole role;
 
     public Boolean active;
 
@@ -41,7 +42,7 @@ public class UserDTO {
     // Construtores
     public UserDTO() {}
 
-    public UserDTO(Long id, String name, String email, String password, UserEntity.UserRole role, Boolean active) {
+    public UserDTO(Long id, String name, String email, String password, UserRole role, Boolean active) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -83,11 +84,11 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserEntity.UserRole getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(UserEntity.UserRole role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

@@ -2,6 +2,7 @@ package com.academy.service;
 
 import com.academy.dto.UserDTO;
 import com.academy.entity.UserEntity;
+import com.academy.enums.UserRole;
 import com.academy.mapper.UserMapper;
 import com.academy.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -73,7 +74,7 @@ public class UserService {
      * @param role Papel do usuário
      * @return Lista de DTOs dos usuários com o papel especificado
      */
-    public List<UserDTO> findByRole(UserEntity.UserRole role) {
+    public List<UserDTO> findByRole(UserRole role) {
         List<UserEntity> entities = userRepository.findByRole(role);
         return userMapper.toDTOList(entities);
     }
@@ -84,7 +85,7 @@ public class UserService {
      * @param role Papel do usuário
      * @return Lista de DTOs dos usuários ativos com o papel especificado
      */
-    public List<UserDTO> findActiveUsersByRole(UserEntity.UserRole role) {
+    public List<UserDTO> findActiveUsersByRole(UserRole role) {
         List<UserEntity> entities = userRepository.findActiveUsersByRole(role);
         return userMapper.toDTOList(entities);
     }

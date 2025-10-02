@@ -8,7 +8,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { CurriculumMatrix, SemesterDisciplines } from '../../shared/models/course.model';
+import { CurriculumMatrix, SemesterDisciplines, Curriculum } from '../../shared/models/course.model';
+import { CurriculumService } from '../../shared/services/curriculum.service';
+import { KeycloakService } from '../../shared/services/keycloak.service';
+import { DisciplineDetailsDialogComponent } from '../../shared/components/discipline-details-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-curriculum',
@@ -20,7 +24,8 @@ import { CurriculumMatrix, SemesterDisciplines } from '../../shared/models/cours
     MatIconModule,
     MatExpansionModule,
     MatChipsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   template: `
     <div class="curriculum-container">
@@ -138,7 +143,12 @@ export class CurriculumComponent implements OnInit {
   curriculumMatrix: CurriculumMatrix | null = null;
   loading = false;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private curriculumService: CurriculumService,
+    private keycloakService: KeycloakService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadCurriculum();
@@ -146,94 +156,62 @@ export class CurriculumComponent implements OnInit {
 
   loadCurriculum(): void {
     this.loading = true;
-    // TODO: Implementar chamada para o serviço de matriz curricular
-    setTimeout(() => {
-      this.curriculumMatrix = {
-        courseId: 1,
-        courseName: 'Ciência da Computação',
-        semesters: [
-          {
-            semesterId: 1,
-            semesterNumber: 1,
-            disciplines: [
-              { id: 1, name: 'Algoritmos e Programação I', workload: 80, description: 'Fundamentos de programação' },
-              { id: 2, name: 'Matemática Discreta', workload: 80, description: 'Fundamentos de matemática' },
-              { id: 3, name: 'Cálculo I', workload: 80, description: 'Cálculo diferencial' },
-              { id: 4, name: 'Introdução à Computação', workload: 40, description: 'História da computação' }
-            ]
-          },
-          {
-            semesterId: 2,
-            semesterNumber: 2,
-            disciplines: [
-              { id: 5, name: 'Algoritmos e Programação II', workload: 80, description: 'Estruturas de dados' },
-              { id: 6, name: 'Estruturas de Dados', workload: 80, description: 'Implementação de estruturas' },
-              { id: 7, name: 'Cálculo II', workload: 80, description: 'Cálculo integral' },
-              { id: 8, name: 'Física I', workload: 80, description: 'Fundamentos de física' }
-            ]
-          },
-          {
-            semesterId: 3,
-            semesterNumber: 3,
-            disciplines: [
-              { id: 9, name: 'Programação Orientada a Objetos', workload: 80, description: 'Paradigma OO' },
-              { id: 10, name: 'Banco de Dados I', workload: 80, description: 'Fundamentos de BD' },
-              { id: 11, name: 'Álgebra Linear', workload: 80, description: 'Álgebra para computação' },
-              { id: 12, name: 'Física II', workload: 80, description: 'Física avançada' }
-            ]
-          },
-          {
-            semesterId: 4,
-            semesterNumber: 4,
-            disciplines: [
-              { id: 13, name: 'Estruturas de Dados Avançadas', workload: 80, description: 'Estruturas complexas' },
-              { id: 14, name: 'Banco de Dados II', workload: 80, description: 'BD avançado' },
-              { id: 15, name: 'Teoria da Computação', workload: 80, description: 'Fundamentos teóricos' },
-              { id: 16, name: 'Estatística', workload: 80, description: 'Estatística aplicada' }
-            ]
-          },
-          {
-            semesterId: 5,
-            semesterNumber: 5,
-            disciplines: [
-              { id: 17, name: 'Engenharia de Software I', workload: 80, description: 'Fundamentos de ES' },
-              { id: 18, name: 'Redes de Computadores', workload: 80, description: 'Fundamentos de redes' },
-              { id: 19, name: 'Sistemas Operacionais', workload: 80, description: 'Fundamentos de SO' },
-              { id: 20, name: 'Inteligência Artificial', workload: 80, description: 'Fundamentos de IA' }
-            ]
-          },
-          {
-            semesterId: 6,
-            semesterNumber: 6,
-            disciplines: [
-              { id: 21, name: 'Engenharia de Software II', workload: 80, description: 'ES avançada' },
-              { id: 22, name: 'Compiladores', workload: 80, description: 'Fundamentos de compiladores' },
-              { id: 23, name: 'Grafos', workload: 80, description: 'Teoria e algoritmos em grafos' },
-              { id: 24, name: 'Machine Learning', workload: 80, description: 'Aprendizado de máquina' }
-            ]
-          },
-          {
-            semesterId: 7,
-            semesterNumber: 7,
-            disciplines: [
-              { id: 25, name: 'Projeto de Software', workload: 80, description: 'Desenvolvimento de projeto' },
-              { id: 26, name: 'Segurança da Informação', workload: 80, description: 'Fundamentos de segurança' },
-              { id: 27, name: 'Computação Gráfica', workload: 80, description: 'Fundamentos de CG' },
-              { id: 28, name: 'Tópicos Avançados', workload: 80, description: 'Tópicos avançados' }
-            ]
-          },
-          {
-            semesterId: 8,
-            semesterNumber: 8,
-            disciplines: [
-              { id: 29, name: 'Trabalho de Conclusão de Curso', workload: 160, description: 'Desenvolvimento do TCC' },
-              { id: 30, name: 'Estágio Supervisionado', workload: 160, description: 'Estágio supervisionado' }
-            ]
-          }
-        ]
-      };
+    const currentUser = this.keycloakService.getCurrentUser();
+    
+    if (!currentUser || !currentUser.id) {
+      this.snackBar.open('Usuário não encontrado', 'Fechar', { duration: 3000 });
       this.loading = false;
-    }, 1000);
+      return;
+    }
+
+    this.curriculumService.getCurriculaByStudent(currentUser.id).subscribe({
+      next: (curricula) => {
+        const grouped = this.groupCurriculaByCourse(curricula);
+        this.curriculumMatrix = grouped.length > 0 ? grouped[0] : null;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar matriz curricular:', error);
+        this.snackBar.open('Erro ao carregar matriz curricular', 'Fechar', { duration: 3000 });
+        this.loading = false;
+      }
+    });
+  }
+
+  private groupCurriculaByCourse(curricula: Curriculum[]): CurriculumMatrix[] {
+    const grouped = new Map<number, CurriculumMatrix>();
+    
+    curricula.forEach(curr => {
+      if (!grouped.has(curr.courseId)) {
+        grouped.set(curr.courseId, {
+          courseId: curr.courseId,
+          courseName: curr.courseName || '',
+          semesters: []
+        });
+      }
+      
+      const matrix = grouped.get(curr.courseId)!;
+      let semester = matrix.semesters.find(s => s.semesterId === curr.semesterId);
+      
+      if (!semester) {
+        semester = {
+          semesterId: curr.semesterId!,
+          semesterNumber: curr.semesterNumber!,
+          disciplines: []
+        };
+        matrix.semesters.push(semester);
+      }
+      
+      semester.disciplines.push({
+        id: curr.disciplineId,
+        name: curr.disciplineName || '',
+        workload: curr.disciplineWorkload || 0,
+        description: '',
+        active: curr.active
+      });
+    });
+    
+    return Array.from(grouped.values());
   }
 
   getTotalDisciplines(): number {
@@ -253,8 +231,9 @@ export class CurriculumComponent implements OnInit {
   }
 
   viewDisciplineDetails(discipline: any): void {
-    this.snackBar.open(`Visualizando detalhes da disciplina: ${discipline.name}`, 'Fechar', {
-      duration: 3000
+    this.dialog.open(DisciplineDetailsDialogComponent, {
+      width: '600px',
+      data: { discipline }
     });
   }
 }

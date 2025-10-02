@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Course } from '../../../shared/models/course.model';
 import { CourseService } from '../../../shared/services/course.service';
+import { CourseDialogComponent } from './course-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -201,14 +202,46 @@ export class CoursesComponent implements OnInit {
   }
 
   createCourse(): void {
-    this.snackBar.open('Funcionalidade em desenvolvimento', 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(CourseDialogComponent, {
+      width: '500px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.courseService.createCourse(result).subscribe({
+          next: (newCourse) => {
+            this.courses.push(newCourse);
+            this.snackBar.open('Curso criado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao criar curso:', error);
+            this.snackBar.open('Erro ao criar curso', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
   editCourse(course: Course): void {
-    this.snackBar.open(`Editando curso: ${course.name}`, 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(CourseDialogComponent, {
+      width: '500px',
+      data: course
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.courseService.updateCourse(course.id!, result).subscribe({
+          next: (updated) => {
+            Object.assign(course, updated);
+            this.snackBar.open('Curso atualizado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar curso:', error);
+            this.snackBar.open('Erro ao atualizar curso', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
@@ -219,19 +252,36 @@ export class CoursesComponent implements OnInit {
   }
 
   toggleCourseStatus(course: Course): void {
-    course.active = !course.active;
-    this.snackBar.open(
-      `Curso ${course.active ? 'ativado' : 'desativado'} com sucesso`,
-      'Fechar',
-      { duration: 3000 }
-    );
+    const updated = { ...course, active: !course.active };
+    this.courseService.updateCourse(course.id!, updated).subscribe({
+      next: (res) => {
+        course.active = res.active;
+        this.snackBar.open(
+          `Curso ${course.active ? 'ativado' : 'desativado'} com sucesso`,
+          'Fechar',
+          { duration: 3000 }
+        );
+      },
+      error: (error) => {
+        console.error('Erro ao alterar status do curso:', error);
+        this.snackBar.open('Erro ao alterar status do curso', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   deleteCourse(course: Course): void {
     if (confirm(`Tem certeza que deseja excluir o curso ${course.name}?`)) {
-      this.courses = this.courses.filter(c => c.id !== course.id);
-      this.snackBar.open('Curso excluído com sucesso', 'Fechar', {
-        duration: 3000
+      this.courseService.deleteCourse(course.id!).subscribe({
+        next: () => {
+          this.courses = this.courses.filter(c => c.id !== course.id);
+          this.snackBar.open('Curso excluído com sucesso', 'Fechar', {
+            duration: 3000
+          });
+        },
+        error: (error) => {
+          console.error('Erro ao excluir curso:', error);
+          this.snackBar.open('Erro ao excluir curso', 'Fechar', { duration: 3000 });
+        }
       });
     }
   }

@@ -127,6 +127,18 @@ import { User } from './shared/models/user.model';
     .spacer {
       flex: 1 1 auto;
     }
+
+    ::ng-deep .mat-mdc-list-item {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    ::ng-deep .mat-mdc-list-item:last-child {
+      border-bottom: none !important;
+    }
+
+    ::ng-deep .mat-mdc-list-item:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
   `]
 })
 export class AppComponent implements OnInit {
@@ -147,22 +159,26 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // Inicializar Keycloak
-    const isAuthenticated = await this.keycloakService.init();
+    // Inicializar Keycloak (carrega usuário do localStorage se existir)
+    await this.keycloakService.init();
     
     // Subscrever ao usuário atual
     this.keycloakService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      
+      // Verificar autenticação após atualização do usuário
+      const isAuthenticated = user !== null;
+      const currentUrl = this.router.url;
+      
+      // Se autenticado e estiver na página de login, redirecionar para dashboard
+      if (isAuthenticated && currentUrl === '/login') {
+        this.router.navigate(['/dashboard']);
+      }
+      // Se não estiver autenticado e não estiver na página de login, redirecionar para login
+      else if (!isAuthenticated && currentUrl !== '/login') {
+        this.router.navigate(['/login']);
+      }
     });
-
-    // Se autenticado e estiver na página de login, redirecionar para dashboard
-    if (isAuthenticated && this.router.url === '/login') {
-      this.router.navigate(['/dashboard']);
-    }
-    // Se não estiver autenticado e não estiver na página de login, redirecionar para login
-    else if (!isAuthenticated && this.router.url !== '/login') {
-      this.router.navigate(['/login']);
-    }
   }
 
   async logout(): Promise<void> {

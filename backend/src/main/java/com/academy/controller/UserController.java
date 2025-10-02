@@ -1,10 +1,12 @@
 package com.academy.controller;
 
 import com.academy.dto.UserDTO;
+import com.academy.dto.UserUpdateDTO;
 import com.academy.entity.UserEntity;
 import com.academy.enums.UserRole;
 import com.academy.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -27,7 +29,7 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Users", description = "Operações relacionadas a usuários")
-@RolesAllowed("ADMIN")
+@PermitAll
 public class UserController {
 
     @Inject
@@ -183,8 +185,16 @@ public class UserController {
             content = @Content(schema = @Schema(implementation = UserDTO.class)))
     @APIResponse(responseCode = "400", description = "Dados inválidos")
     @APIResponse(responseCode = "404", description = "Usuário não encontrado")
-    public Response update(@PathParam("id") Long id, @Valid UserDTO userDTO) {
+    public Response update(@PathParam("id") Long id, @Valid UserUpdateDTO userUpdateDTO) {
         try {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(userUpdateDTO.getId());
+            userDTO.setName(userUpdateDTO.getName());
+            userDTO.setEmail(userUpdateDTO.getEmail());
+            userDTO.setPassword(userUpdateDTO.getPassword());
+            userDTO.setRole(userUpdateDTO.getRole());
+            userDTO.setActive(userUpdateDTO.getActive());
+            
             UserDTO updatedUser = userService.update(id, userDTO);
             return Response.ok(updatedUser).build();
         } catch (IllegalArgumentException e) {

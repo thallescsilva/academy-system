@@ -2,7 +2,6 @@ package com.academy.controller;
 
 import com.academy.dto.CourseDTO;
 import com.academy.service.CourseService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -25,7 +24,6 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Courses", description = "Operações relacionadas a cursos")
-@RolesAllowed("COORDINATOR")
 public class CourseController {
 
     @Inject

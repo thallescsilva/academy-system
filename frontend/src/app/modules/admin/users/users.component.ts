@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { User } from '../../../shared/models/user.model';
 import { UserService } from '../../../shared/services/user.service';
+import { UserDialogComponent } from './user-dialog.component';
 
 @Component({
   selector: 'app-users',
@@ -223,14 +224,46 @@ export class UsersComponent implements OnInit {
   }
 
   createUser(): void {
-    this.snackBar.open('Funcionalidade em desenvolvimento', 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '500px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.createUser(result).subscribe({
+          next: (newUser) => {
+            this.users.push(newUser);
+            this.snackBar.open('Usuário criado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao criar usuário:', error);
+            this.snackBar.open('Erro ao criar usuário', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
   editUser(user: User): void {
-    this.snackBar.open(`Editando usuário: ${user.name}`, 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '500px',
+      data: user
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.updateUser(user.id!, result).subscribe({
+          next: (updated) => {
+            Object.assign(user, updated);
+            this.snackBar.open('Usuário atualizado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar usuário:', error);
+            this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 

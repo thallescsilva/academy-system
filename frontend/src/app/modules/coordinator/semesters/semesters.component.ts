@@ -5,10 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { Semester } from '../../../shared/models/course.model';
+import { Semester } from '../../../shared/models/semester.model';
+import { SemesterService } from '../../../shared/services/semester.service';
+import { SemesterDialogComponent } from './semester-dialog.component';
 
 @Component({
   selector: 'app-semesters',
@@ -21,7 +24,8 @@ import { Semester } from '../../../shared/models/course.model';
     MatCardModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   template: `
     <div class="semesters-container">
@@ -47,16 +51,22 @@ import { Semester } from '../../../shared/models/course.model';
                 <td mat-cell *matCellDef="let semester">{{ semester.id }}</td>
               </ng-container>
 
-              <!-- Number Column -->
-              <ng-container matColumnDef="number">
-                <th mat-header-cell *matHeaderCellDef>Número</th>
-                <td mat-cell *matCellDef="let semester">{{ semester.number }}º Semestre</td>
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nome</th>
+                <td mat-cell *matCellDef="let semester">{{ semester.name }}</td>
+              </ng-container>
+
+              <!-- Period Column -->
+              <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef>Período</th>
+                <td mat-cell *matCellDef="let semester">{{ semester.startDate }} até {{ semester.endDate }}</td>
               </ng-container>
 
               <!-- Course Column -->
-              <ng-container matColumnDef="courseName">
+              <ng-container matColumnDef="course">
                 <th mat-header-cell *matHeaderCellDef>Curso</th>
-                <td mat-cell *matCellDef="let semester">{{ semester.courseName }}</td>
+                <td mat-cell *matCellDef="let semester">{{ semester.course?.name || '-' }}</td>
               </ng-container>
 
               <!-- Status Column -->
@@ -105,60 +115,27 @@ import { Semester } from '../../../shared/models/course.model';
     </div>
   `,
   styles: [`
-    .semesters-container {
-      padding: 24px;
-    }
-
-    .actions-bar {
-      margin-bottom: 16px;
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    .semesters-table {
-      width: 100%;
-    }
-
-    .status-badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .status-badge.active {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .status-badge.inactive {
-      background-color: #f44336;
-      color: white;
-    }
-
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
-
-    @media (max-width: 768px) {
-      .semesters-container {
-        padding: 16px;
-      }
-    }
+    .semesters-container { padding: 24px; }
+    .actions-bar { margin-bottom: 16px; }
+    .table-container { overflow-x: auto; }
+    .semesters-table { width: 100%; }
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .status-badge.active { background-color: #4caf50; color: white; }
+    .status-badge.inactive { background-color: #f44336; color: white; }
+    .loading-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+    @media (max-width: 768px) { .semesters-container { padding: 16px; } }
   `]
 })
 export class SemestersComponent implements OnInit {
   semesters: Semester[] = [];
-  displayedColumns: string[] = ['id', 'number', 'courseName', 'active', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'period', 'course', 'active', 'actions'];
   loading = false;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private semesterService: SemesterService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadSemesters();
@@ -166,55 +143,73 @@ export class SemestersComponent implements OnInit {
 
   loadSemesters(): void {
     this.loading = true;
-    // TODO: Implementar chamada para o serviço de semestres
-    setTimeout(() => {
-      this.semesters = [
-        { id: 1, number: 1, courseName: 'Ciência da Computação', active: true },
-        { id: 2, number: 2, courseName: 'Ciência da Computação', active: true },
-        { id: 3, number: 3, courseName: 'Ciência da Computação', active: true },
-        { id: 4, number: 4, courseName: 'Ciência da Computação', active: true },
-        { id: 5, number: 5, courseName: 'Ciência da Computação', active: true },
-        { id: 6, number: 6, courseName: 'Ciência da Computação', active: true },
-        { id: 7, number: 7, courseName: 'Ciência da Computação', active: true },
-        { id: 8, number: 8, courseName: 'Ciência da Computação', active: true }
-      ];
-      this.loading = false;
-    }, 1000);
+    this.semesterService.getAllSemesters().subscribe({
+      next: (items) => { this.semesters = items; this.loading = false; },
+      error: (err) => { this.loading = false; console.error(err); this.snackBar.open('Erro ao carregar semestres', 'Fechar', { duration: 3000 }); }
+    });
   }
 
   createSemester(): void {
-    this.snackBar.open('Funcionalidade de criação de semestre em desenvolvimento', 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(SemesterDialogComponent, {
+      width: '500px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.semesterService.createSemester(result).subscribe({
+          next: (newSemester) => {
+            this.semesters.push(newSemester);
+            this.snackBar.open('Semestre criado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao criar semestre:', error);
+            this.snackBar.open('Erro ao criar semestre', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
   editSemester(semester: Semester): void {
-    this.snackBar.open(`Editando semestre: ${semester.number}º semestre`, 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(SemesterDialogComponent, {
+      width: '500px',
+      data: semester
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.semesterService.updateSemester(semester.id!, result).subscribe({
+          next: (updated) => {
+            Object.assign(semester, updated);
+            this.snackBar.open('Semestre atualizado com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar semestre:', error);
+            this.snackBar.open('Erro ao atualizar semestre', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
   viewDisciplines(semester: Semester): void {
-    this.snackBar.open(`Visualizando disciplinas do ${semester.number}º semestre`, 'Fechar', {
-      duration: 3000
-    });
+    this.snackBar.open(`Funcionalidade de visualização de disciplinas em desenvolvimento`, 'Fechar', { duration: 3000 });
   }
 
   toggleSemesterStatus(semester: Semester): void {
-    semester.active = !semester.active;
-    this.snackBar.open(
-      `Semestre ${semester.active ? 'ativado' : 'desativado'} com sucesso`,
-      'Fechar',
-      { duration: 3000 }
-    );
+    const updated: Semester = { ...semester, active: !semester.active } as Semester;
+    this.semesterService.updateSemester(semester.id!, updated).subscribe({
+      next: (res) => { semester.active = res.active; this.snackBar.open(`Semestre ${semester.active ? 'ativado' : 'desativado'} com sucesso`, 'Fechar', { duration: 3000 }); },
+      error: () => { this.snackBar.open('Erro ao atualizar semestre', 'Fechar', { duration: 3000 }); }
+    });
   }
 
   deleteSemester(semester: Semester): void {
-    if (confirm(`Tem certeza que deseja excluir o ${semester.number}º semestre?`)) {
-      this.semesters = this.semesters.filter(s => s.id !== semester.id);
-      this.snackBar.open('Semestre excluído com sucesso', 'Fechar', {
-        duration: 3000
-      });
-    }
+    if (!confirm(`Tem certeza que deseja excluir o semestre ${semester.name}?`)) return;
+    this.semesterService.deleteSemester(semester.id!).subscribe({
+      next: () => { this.semesters = this.semesters.filter(s => s.id !== semester.id); this.snackBar.open('Semestre excluído com sucesso', 'Fechar', { duration: 3000 }); },
+      error: () => { this.snackBar.open('Erro ao excluir semestre', 'Fechar', { duration: 3000 }); }
+    });
   }
 }

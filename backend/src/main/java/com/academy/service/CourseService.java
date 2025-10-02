@@ -167,8 +167,7 @@ public class CourseService {
         CourseEntity entity = courseRepository.findByIdOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Curso não encontrado: " + id));
 
-        entity.active = false;
-        courseRepository.persist(entity);
+        courseRepository.delete(entity);
     }
 
     /**

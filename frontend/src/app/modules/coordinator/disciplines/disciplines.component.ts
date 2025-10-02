@@ -8,7 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { Discipline } from '../../../shared/models/course.model';
+import { Discipline } from '../../../shared/models/discipline.model';
+import { DisciplineService } from '../../../shared/services/discipline.service';
+import { DisciplineDialogComponent } from './discipline-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-disciplines',
@@ -20,7 +23,8 @@ import { Discipline } from '../../../shared/models/course.model';
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   template: `
     <div class="disciplines-container">
@@ -52,6 +56,18 @@ import { Discipline } from '../../../shared/models/course.model';
                 <td mat-cell *matCellDef="let discipline">{{ discipline.name }}</td>
               </ng-container>
 
+              <!-- Code Column -->
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef>Código</th>
+                <td mat-cell *matCellDef="let discipline">{{ discipline.code }}</td>
+              </ng-container>
+
+              <!-- Credits Column -->
+              <ng-container matColumnDef="credits">
+                <th mat-header-cell *matHeaderCellDef>Créditos</th>
+                <td mat-cell *matCellDef="let discipline">{{ discipline.credits }}</td>
+              </ng-container>
+
               <!-- Workload Column -->
               <ng-container matColumnDef="workload">
                 <th mat-header-cell *matHeaderCellDef>Carga Horária</th>
@@ -59,23 +75,17 @@ import { Discipline } from '../../../shared/models/course.model';
               </ng-container>
 
               <!-- Semester Column -->
-              <ng-container matColumnDef="semesterNumber">
+              <ng-container matColumnDef="semester">
                 <th mat-header-cell *matHeaderCellDef>Semestre</th>
-                <td mat-cell *matCellDef="let discipline">{{ discipline.semesterNumber }}º</td>
-              </ng-container>
-
-              <!-- Course Column -->
-              <ng-container matColumnDef="courseName">
-                <th mat-header-cell *matHeaderCellDef>Curso</th>
-                <td mat-cell *matCellDef="let discipline">{{ discipline.courseName }}</td>
+                <td mat-cell *matCellDef="let discipline">{{ discipline.semester?.name || '-' }}</td>
               </ng-container>
 
               <!-- Status Column -->
               <ng-container matColumnDef="active">
                 <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let discipline">
-                  <span class="status-badge" [class]="discipline.active ? 'active' : 'inactive'">
-                    {{ discipline.active ? 'Ativo' : 'Inativo' }}
+                  <span class="status-badge" [class]="discipline.description ? 'active' : 'inactive'">
+                    {{ discipline.description ? 'Ativo' : 'Inativo' }}
                   </span>
                 </td>
               </ng-container>
@@ -86,10 +96,6 @@ import { Discipline } from '../../../shared/models/course.model';
                 <td mat-cell *matCellDef="let discipline">
                   <button mat-icon-button (click)="editDiscipline(discipline)" matTooltip="Editar">
                     <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="toggleDisciplineStatus(discipline)" 
-                          [matTooltip]="discipline.active ? 'Desativar' : 'Ativar'">
-                    <mat-icon>{{ discipline.active ? 'block' : 'check_circle' }}</mat-icon>
                   </button>
                   <button mat-icon-button (click)="deleteDiscipline(discipline)" matTooltip="Excluir" color="warn">
                     <mat-icon>delete</mat-icon>
@@ -113,60 +119,27 @@ import { Discipline } from '../../../shared/models/course.model';
     </div>
   `,
   styles: [`
-    .disciplines-container {
-      padding: 24px;
-    }
-
-    .actions-bar {
-      margin-bottom: 16px;
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    .disciplines-table {
-      width: 100%;
-    }
-
-    .status-badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .status-badge.active {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .status-badge.inactive {
-      background-color: #f44336;
-      color: white;
-    }
-
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
-
-    @media (max-width: 768px) {
-      .disciplines-container {
-        padding: 16px;
-      }
-    }
+    .disciplines-container { padding: 24px; }
+    .actions-bar { margin-bottom: 16px; }
+    .table-container { overflow-x: auto; }
+    .disciplines-table { width: 100%; }
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .status-badge.active { background-color: #4caf50; color: white; }
+    .status-badge.inactive { background-color: #f44336; color: white; }
+    .loading-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+    @media (max-width: 768px) { .disciplines-container { padding: 16px; } }
   `]
 })
 export class DisciplinesComponent implements OnInit {
   disciplines: Discipline[] = [];
-  displayedColumns: string[] = ['id', 'name', 'workload', 'semesterNumber', 'courseName', 'active', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'code', 'credits', 'workload', 'semester', 'actions'];
   loading = false;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private disciplineService: DisciplineService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadDisciplines();
@@ -174,48 +147,61 @@ export class DisciplinesComponent implements OnInit {
 
   loadDisciplines(): void {
     this.loading = true;
-    // TODO: Implementar chamada para o serviço de disciplinas
-    setTimeout(() => {
-      this.disciplines = [
-        { id: 1, name: 'Algoritmos e Programação I', workload: 80, semesterNumber: 1, courseName: 'Ciência da Computação', active: true },
-        { id: 2, name: 'Matemática Discreta', workload: 80, semesterNumber: 1, courseName: 'Ciência da Computação', active: true },
-        { id: 3, name: 'Cálculo I', workload: 80, semesterNumber: 1, courseName: 'Ciência da Computação', active: true },
-        { id: 4, name: 'Algoritmos e Programação II', workload: 80, semesterNumber: 2, courseName: 'Ciência da Computação', active: true },
-        { id: 5, name: 'Estruturas de Dados', workload: 80, semesterNumber: 2, courseName: 'Ciência da Computação', active: true },
-        { id: 6, name: 'Programação Orientada a Objetos', workload: 80, semesterNumber: 3, courseName: 'Ciência da Computação', active: true },
-        { id: 7, name: 'Banco de Dados I', workload: 80, semesterNumber: 3, courseName: 'Ciência da Computação', active: true }
-      ];
-      this.loading = false;
-    }, 1000);
+    this.disciplineService.getAllDisciplines().subscribe({
+      next: (items) => { this.disciplines = items; this.loading = false; },
+      error: (err) => { this.loading = false; console.error(err); this.snackBar.open('Erro ao carregar disciplinas', 'Fechar', { duration: 3000 }); }
+    });
   }
 
   createDiscipline(): void {
-    this.snackBar.open('Funcionalidade em desenvolvimento', 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(DisciplineDialogComponent, {
+      width: '500px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.disciplineService.createDiscipline(result).subscribe({
+          next: (newDiscipline) => {
+            this.disciplines.push(newDiscipline);
+            this.snackBar.open('Disciplina criada com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao criar disciplina:', error);
+            this.snackBar.open('Erro ao criar disciplina', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
   editDiscipline(discipline: Discipline): void {
-    this.snackBar.open(`Editando disciplina: ${discipline.name}`, 'Fechar', {
-      duration: 3000
+    const dialogRef = this.dialog.open(DisciplineDialogComponent, {
+      width: '500px',
+      data: discipline
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.disciplineService.updateDiscipline(discipline.id!, result).subscribe({
+          next: (updated) => {
+            Object.assign(discipline, updated);
+            this.snackBar.open('Disciplina atualizada com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar disciplina:', error);
+            this.snackBar.open('Erro ao atualizar disciplina', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 
-  toggleDisciplineStatus(discipline: Discipline): void {
-    discipline.active = !discipline.active;
-    this.snackBar.open(
-      `Disciplina ${discipline.active ? 'ativada' : 'desativada'} com sucesso`,
-      'Fechar',
-      { duration: 3000 }
-    );
-  }
-
   deleteDiscipline(discipline: Discipline): void {
-    if (confirm(`Tem certeza que deseja excluir a disciplina ${discipline.name}?`)) {
-      this.disciplines = this.disciplines.filter(d => d.id !== discipline.id);
-      this.snackBar.open('Disciplina excluída com sucesso', 'Fechar', {
-        duration: 3000
-      });
-    }
+    if (!confirm(`Tem certeza que deseja excluir a disciplina ${discipline.name}?`)) return;
+    this.disciplineService.deleteDiscipline(discipline.id!).subscribe({
+      next: () => { this.disciplines = this.disciplines.filter(d => d.id !== discipline.id); this.snackBar.open('Disciplina excluída com sucesso', 'Fechar', { duration: 3000 }); },
+      error: () => { this.snackBar.open('Erro ao excluir disciplina', 'Fechar', { duration: 3000 }); }
+    });
   }
 }

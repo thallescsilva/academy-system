@@ -7,6 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.annotation.security.PermitAll;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Disciplines", description = "Operations related to disciplines")
+@PermitAll
 public class DisciplineController {
 
     @Inject
@@ -55,7 +57,7 @@ public class DisciplineController {
 
     @POST
     @Operation(summary = "Create new discipline", description = "Create a new discipline")
-    @RolesAllowed("COORDINATOR")
+    // @RolesAllowed("COORDINATOR")
     public Response createDiscipline(DisciplineDTO disciplineDTO) {
         try {
             DisciplineDTO createdDiscipline = disciplineService.create(disciplineDTO);
@@ -70,7 +72,7 @@ public class DisciplineController {
     @PUT
     @Path("/{id}")
     @Operation(summary = "Update discipline", description = "Update an existing discipline")
-    @RolesAllowed("COORDINATOR")
+    // @RolesAllowed("COORDINATOR")
     public Response updateDiscipline(@PathParam("id") Long id, DisciplineDTO disciplineDTO) {
         try {
             DisciplineDTO updatedDiscipline = disciplineService.update(id, disciplineDTO);
@@ -90,7 +92,7 @@ public class DisciplineController {
     @DELETE
     @Path("/{id}")
     @Operation(summary = "Delete discipline", description = "Delete a discipline by ID")
-    @RolesAllowed("COORDINATOR")
+    // @RolesAllowed("COORDINATOR")
     public Response deleteDiscipline(@PathParam("id") Long id) {
         try {
             boolean deleted = disciplineService.delete(id);

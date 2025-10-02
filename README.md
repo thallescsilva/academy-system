@@ -540,9 +540,9 @@ Estruturei os commits de forma a:
 ## 🤝 Contribuindo
 
 1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'feat: add some amazing feature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+2. Crie uma branch para sua feature (`git checkout -b feature/some-feature`)
+3. Commit suas mudanças (`git commit -m 'feat: add some some-feature'`)
+4. Push para a branch (`git push origin feature/some-feature`)
 5. Abra um Pull Request
 
 ### Convenção de Commits
@@ -555,14 +555,6 @@ refactor: refatoração de código
 style: formatação
 chore: tarefas de build, configs
 ```
-
-## 📄 Licença
-
-Desenvolvi este projeto para fins educacionais.
-
-## 👨‍💻 Autor
-
-Desenvolvi este projeto como trabalho acadêmico para a disciplina de Desenvolvimento Web.
 
 ---
 

@@ -166,8 +166,7 @@ public class UserService {
         UserEntity entity = userRepository.findByIdOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + id));
 
-        entity.active = false;
-        userRepository.persist(entity);
+        userRepository.delete(entity);
     }
 
     /**

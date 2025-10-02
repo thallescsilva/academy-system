@@ -38,7 +38,6 @@ public class CurriculumService {
     public CurriculumDTO create(CurriculumDTO curriculumDTO) {
         CurriculumEntity entity = curriculumMapper.toEntity(curriculumDTO);
         
-        // Carregar o curso se courseId foi fornecido
         if (curriculumDTO.getCourseId() != null) {
             entity.course = CourseEntity.findById(curriculumDTO.getCourseId());
             if (entity.course == null) {
@@ -46,7 +45,6 @@ public class CurriculumService {
             }
         }
         
-        // Carregar a disciplina se disciplineId foi fornecido
         if (curriculumDTO.getDisciplineId() != null) {
             entity.discipline = DisciplineEntity.findById(curriculumDTO.getDisciplineId());
             if (entity.discipline == null) {
@@ -84,7 +82,6 @@ public class CurriculumService {
     }
 
     public List<CurriculumDTO> findByStudentId(Long studentId) {
-        // Buscar o usuário para verificar se é um aluno
         UserEntity student = UserEntity.findById(studentId);
         if (student == null || student.role != UserRole.STUDENT) {
             return List.of();

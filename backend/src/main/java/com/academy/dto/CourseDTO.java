@@ -39,7 +39,6 @@ public class CourseDTO {
 
     public List<SemesterDTO> semesters;
 
-    // Construtores
     public CourseDTO() {}
 
     public CourseDTO(Long id, String name, String description, Integer totalHours, Integer durationSemesters, Boolean active) {
@@ -51,7 +50,6 @@ public class CourseDTO {
         this.active = active;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

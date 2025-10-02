@@ -25,7 +25,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityCreation() {
-        // Verifica se a entidade é criada corretamente
         assertNotNull(userEntity);
         assertNull(userEntity.id);
         assertNull(userEntity.name);
@@ -39,7 +38,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntitySettersAndGetters() {
-        // Testa setters e getters
         userEntity.name = "João Silva";
         userEntity.email = "joao.silva@academy.com";
         userEntity.password = "password123";
@@ -55,7 +53,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityEquals() {
-        // Testa o método equals
         UserEntity user1 = new UserEntity();
         user1.id = 1L;
         user1.email = "test@academy.com";
@@ -76,7 +73,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityHashCode() {
-        // Testa o método hashCode
         UserEntity user1 = new UserEntity();
         user1.id = 1L;
         user1.email = "test@academy.com";
@@ -90,7 +86,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityToString() {
-        // Testa o método toString
         userEntity.id = 1L;
         userEntity.name = "João Silva";
         userEntity.email = "joao.silva@academy.com";
@@ -108,7 +103,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityPrePersist() {
-        // Testa o método onCreate (PrePersist)
         userEntity.onCreate();
         
         assertNotNull(userEntity.createdAt);
@@ -119,7 +113,6 @@ class UserEntityTest {
 
     @Test
     void testUserEntityPreUpdate() {
-        // Testa o método onUpdate (PreUpdate)
         LocalDateTime initialTime = LocalDateTime.now().minusHours(1);
         userEntity.createdAt = initialTime;
         userEntity.updatedAt = initialTime;

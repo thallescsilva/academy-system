@@ -27,7 +27,6 @@ public class SemesterDTO {
 
     public LocalDateTime updatedAt;
 
-    // Construtores
     public SemesterDTO() {}
 
     public SemesterDTO(Long id, Integer number, Long courseId, String courseName, Boolean active) {
@@ -38,7 +37,6 @@ public class SemesterDTO {
         this.active = active;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

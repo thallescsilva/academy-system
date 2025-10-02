@@ -40,7 +40,6 @@ public class DisciplineDTO {
 
     public LocalDateTime updatedAt;
 
-    // Construtores
     public DisciplineDTO() {}
 
     public DisciplineDTO(Long id, String name, String description, Integer workload, Long semesterId, Integer semesterNumber, Boolean active) {
@@ -53,7 +52,6 @@ public class DisciplineDTO {
         this.active = active;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

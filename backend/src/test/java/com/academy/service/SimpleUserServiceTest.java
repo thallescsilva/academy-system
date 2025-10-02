@@ -19,7 +19,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserRoleEnum() {
-        // Testa se o enum UserRole funciona corretamente
         assertEquals("Administrador", UserRole.ADMIN.getDescription());
         assertEquals("Coordenador", UserRole.COORDINATOR.getDescription());
         assertEquals("Professor", UserRole.PROFESSOR.getDescription());
@@ -31,7 +30,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserEntityCreation() {
-        // Testa criação de UserEntity
         UserEntity user = new UserEntity();
         user.name = "João Silva";
         user.email = "joao@academy.com";
@@ -52,7 +50,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOCreation() {
-        // Testa criação de UserDTO
         UserDTO dto = new UserDTO();
         dto.name = "Maria Santos";
         dto.email = "maria@academy.com";
@@ -73,7 +70,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserEntityTimestamps() {
-        // Testa se os timestamps podem ser definidos
         UserEntity user = new UserEntity();
         LocalDateTime now = LocalDateTime.now();
         user.createdAt = now;
@@ -86,7 +82,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserEntityEquals() {
-        // Testa o método equals
         UserEntity user1 = new UserEntity();
         user1.id = 1L;
         user1.email = "test@academy.com";
@@ -107,7 +102,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserEntityHashCode() {
-        // Testa o método hashCode
         UserEntity user1 = new UserEntity();
         user1.id = 1L;
         user1.email = "test@academy.com";
@@ -121,7 +115,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserEntityToString() {
-        // Testa o método toString
         UserEntity user = new UserEntity();
         user.id = 1L;
         user.name = "João Silva";
@@ -140,7 +133,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOGettersAndSetters() {
-        // Testa getters e setters do UserDTO
         UserDTO dto = new UserDTO();
         
         dto.setId(1L);
@@ -160,7 +152,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOConstructor() {
-        // Testa o construtor com parâmetros
         LocalDateTime now = LocalDateTime.now();
         UserDTO dto = new UserDTO(1L, "João Silva", "joao@academy.com", "password123", UserRole.STUDENT, true);
         
@@ -174,7 +165,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOEquals() {
-        // Testa o método equals do UserDTO
         UserDTO dto1 = new UserDTO();
         dto1.id = 1L;
         dto1.email = "test@academy.com";
@@ -195,7 +185,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOHashCode() {
-        // Testa o método hashCode do UserDTO
         UserDTO dto1 = new UserDTO();
         dto1.id = 1L;
         dto1.email = "test@academy.com";
@@ -209,7 +198,6 @@ class SimpleUserServiceTest {
 
     @Test
     void testUserDTOToString() {
-        // Testa o método toString do UserDTO
         UserDTO dto = new UserDTO();
         dto.id = 1L;
         dto.name = "João Silva";

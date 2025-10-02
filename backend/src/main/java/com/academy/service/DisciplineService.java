@@ -35,7 +35,6 @@ public class DisciplineService {
     public DisciplineDTO create(DisciplineDTO disciplineDTO) {
         DisciplineEntity entity = disciplineMapper.toEntity(disciplineDTO);
         
-        // Carregar o semestre se semesterId foi fornecido
         if (disciplineDTO.getSemesterId() != null) {
             entity.semester = SemesterEntity.findById(disciplineDTO.getSemesterId());
             if (entity.semester == null) {

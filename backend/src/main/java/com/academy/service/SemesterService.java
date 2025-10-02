@@ -35,7 +35,6 @@ public class SemesterService {
     public SemesterDTO create(SemesterDTO semesterDTO) {
         SemesterEntity entity = semesterMapper.toEntity(semesterDTO);
         
-        // Carregar o curso se courseId foi fornecido
         if (semesterDTO.getCourseId() != null) {
             entity.course = CourseEntity.findById(semesterDTO.getCourseId());
             if (entity.course == null) {

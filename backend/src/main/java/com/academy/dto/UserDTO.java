@@ -39,7 +39,6 @@ public class UserDTO {
 
     public LocalDateTime updatedAt;
 
-    // Construtores
     public UserDTO() {}
 
     public UserDTO(Long id, String name, String email, String password, UserRole role, Boolean active) {
@@ -51,7 +50,6 @@ public class UserDTO {
         this.active = active;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

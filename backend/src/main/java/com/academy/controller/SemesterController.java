@@ -55,7 +55,7 @@ public class SemesterController {
 
     @POST
     @Operation(summary = "Create new semester", description = "Create a new semester")
-    // @RolesAllowed("COORDINATOR") // Temporariamente desabilitado para validação manual
+    // @RolesAllowed("COORDINATOR")
     public Response createSemester(SemesterDTO semesterDTO) {
         try {
             SemesterDTO createdSemester = semesterService.create(semesterDTO);
@@ -70,7 +70,7 @@ public class SemesterController {
     @PUT
     @Path("/{id}")
     @Operation(summary = "Update semester", description = "Update an existing semester")
-    // @RolesAllowed("COORDINATOR") // Temporariamente desabilitado para validação manual
+    // @RolesAllowed("COORDINATOR")
     public Response updateSemester(@PathParam("id") Long id, SemesterDTO semesterDTO) {
         try {
             SemesterDTO updatedSemester = semesterService.update(id, semesterDTO);
@@ -90,7 +90,7 @@ public class SemesterController {
     @DELETE
     @Path("/{id}")
     @Operation(summary = "Delete semester", description = "Delete a semester by ID")
-    // @RolesAllowed("COORDINATOR") // Temporariamente desabilitado para validação manual
+    // @RolesAllowed("COORDINATOR")
     public Response deleteSemester(@PathParam("id") Long id) {
         try {
             boolean deleted = semesterService.delete(id);

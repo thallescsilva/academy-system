@@ -26,7 +26,6 @@ class BackendIntegrationTest {
     @Test
     @Order(1)
     void testCreateUser() {
-        // Arrange
         UserDTO user = new UserDTO();
         user.name = "João Silva";
         user.email = "joao.silva@academy.com";
@@ -34,7 +33,6 @@ class BackendIntegrationTest {
         user.role = UserRole.STUDENT;
         user.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(user)
@@ -53,7 +51,6 @@ class BackendIntegrationTest {
     @Test
     @Order(2)
     void testCreateCourse() {
-        // Arrange
         CourseDTO course = new CourseDTO();
         course.name = "Ciência da Computação";
         course.description = "Curso de graduação em Ciência da Computação";
@@ -61,7 +58,6 @@ class BackendIntegrationTest {
         course.durationSemesters = 8;
         course.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(course)
@@ -81,13 +77,11 @@ class BackendIntegrationTest {
     @Test
     @Order(3)
     void testCreateSemester() {
-        // Arrange
         SemesterDTO semester = new SemesterDTO();
         semester.number = 1;
-        semester.courseId = 1L; // Assumindo que o curso foi criado no teste anterior
+        semester.courseId = 1L;
         semester.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(semester)
@@ -105,15 +99,13 @@ class BackendIntegrationTest {
     @Test
     @Order(4)
     void testCreateDiscipline() {
-        // Arrange
         DisciplineDTO discipline = new DisciplineDTO();
         discipline.name = "Algoritmos e Estruturas de Dados";
         discipline.description = "Introdução a algoritmos e estruturas de dados";
         discipline.workload = 80;
-        discipline.semesterId = 1L; // Assumindo que o semestre foi criado no teste anterior
+        discipline.semesterId = 1L;
         discipline.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(discipline)
@@ -133,13 +125,11 @@ class BackendIntegrationTest {
     @Test
     @Order(5)
     void testCreateCurriculum() {
-        // Arrange
         CurriculumDTO curriculum = new CurriculumDTO();
-        curriculum.courseId = 1L; // Assumindo que o curso foi criado
-        curriculum.disciplineId = 1L; // Assumindo que a disciplina foi criada
+        curriculum.courseId = 1L;
+        curriculum.disciplineId = 1L;
         curriculum.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(curriculum)
@@ -157,7 +147,6 @@ class BackendIntegrationTest {
     @Test
     @Order(6)
     void testListAllUsers() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/users")
@@ -173,7 +162,6 @@ class BackendIntegrationTest {
     @Test
     @Order(7)
     void testListAllCourses() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/courses")
@@ -189,7 +177,6 @@ class BackendIntegrationTest {
     @Test
     @Order(8)
     void testListAllSemesters() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/semesters")
@@ -204,7 +191,6 @@ class BackendIntegrationTest {
     @Test
     @Order(9)
     void testListAllDisciplines() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/disciplines")
@@ -220,7 +206,6 @@ class BackendIntegrationTest {
     @Test
     @Order(10)
     void testListAllCurricula() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/curricula")
@@ -235,7 +220,6 @@ class BackendIntegrationTest {
     @Test
     @Order(11)
     void testFindUserById() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/users/1")
@@ -251,7 +235,6 @@ class BackendIntegrationTest {
     @Test
     @Order(12)
     void testFindCourseById() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/courses/1")
@@ -266,7 +249,6 @@ class BackendIntegrationTest {
     @Test
     @Order(13)
     void testUpdateUser() {
-        // Arrange
         UserDTO user = new UserDTO();
         user.name = "João Silva Updated";
         user.email = "joao.updated@academy.com";
@@ -274,7 +256,6 @@ class BackendIntegrationTest {
         user.role = UserRole.STUDENT;
         user.active = true;
 
-        // Act & Assert
         given()
             .contentType(ContentType.JSON)
             .body(user)
@@ -291,7 +272,6 @@ class BackendIntegrationTest {
     @Test
     @Order(14)
     void testDeleteUser() {
-        // Act & Assert
         given()
             .when()
                 .delete("/api/users/1")
@@ -302,7 +282,6 @@ class BackendIntegrationTest {
     @Test
     @Order(15)
     void testFindUserByIdNotFound() {
-        // Act & Assert
         given()
             .when()
                 .get("/api/users/1")

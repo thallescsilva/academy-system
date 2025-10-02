@@ -24,7 +24,7 @@ public interface UserMapper {
      * @param entity Entidade do usuário
      * @return DTO do usuário
      */
-    @Mapping(target = "password", ignore = true) // Não expor senha no DTO
+    @Mapping(target = "password", ignore = true)
     UserDTO toDTO(UserEntity entity);
 
     /**

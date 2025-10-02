@@ -10,7 +10,6 @@ class UserRoleTest {
 
     @Test
     void testUserRoleValues() {
-        // Verifica se todos os valores estão presentes
         UserRole[] roles = UserRole.values();
         assertEquals(4, roles.length);
         
@@ -22,7 +21,6 @@ class UserRoleTest {
 
     @Test
     void testUserRoleDescriptions() {
-        // Verifica se as descrições estão corretas
         assertEquals("Administrador", UserRole.ADMIN.getDescription());
         assertEquals("Coordenador", UserRole.COORDINATOR.getDescription());
         assertEquals("Professor", UserRole.PROFESSOR.getDescription());
@@ -31,7 +29,6 @@ class UserRoleTest {
 
     @Test
     void testUserRoleToString() {
-        // Verifica se o toString retorna a descrição
         assertEquals("Administrador", UserRole.ADMIN.toString());
         assertEquals("Coordenador", UserRole.COORDINATOR.toString());
         assertEquals("Professor", UserRole.PROFESSOR.toString());
@@ -40,7 +37,6 @@ class UserRoleTest {
 
     @Test
     void testUserRoleValueOf() {
-        // Verifica se valueOf funciona corretamente
         assertEquals(UserRole.ADMIN, UserRole.valueOf("ADMIN"));
         assertEquals(UserRole.COORDINATOR, UserRole.valueOf("COORDINATOR"));
         assertEquals(UserRole.PROFESSOR, UserRole.valueOf("PROFESSOR"));
@@ -49,7 +45,6 @@ class UserRoleTest {
 
     @Test
     void testUserRoleValueOfInvalid() {
-        // Verifica se valueOf lança exceção para valores inválidos
         assertThrows(IllegalArgumentException.class, () -> UserRole.valueOf("INVALID"));
         assertThrows(IllegalArgumentException.class, () -> UserRole.valueOf("admin"));
         assertThrows(IllegalArgumentException.class, () -> UserRole.valueOf(""));

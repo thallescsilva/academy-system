@@ -33,7 +33,6 @@ public class CurriculumDTO {
 
     public LocalDateTime updatedAt;
 
-    // DTO para exibição da matriz curricular completa
     public static class CurriculumMatrixDTO {
         public Long courseId;
         public String courseName;
@@ -46,7 +45,6 @@ public class CurriculumDTO {
         }
     }
 
-    // DTO para disciplinas por semestre
     public static class SemesterDisciplinesDTO {
         public Long semesterId;
         public Integer semesterNumber;
@@ -59,7 +57,6 @@ public class CurriculumDTO {
         }
     }
 
-    // Construtores
     public CurriculumDTO() {}
 
     public CurriculumDTO(Long id, Long courseId, String courseName, Long disciplineId, String disciplineName, 
@@ -75,7 +72,6 @@ public class CurriculumDTO {
         this.active = active;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

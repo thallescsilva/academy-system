@@ -55,7 +55,7 @@ public class CurriculumController {
 
     @POST
     @Operation(summary = "Create new curriculum", description = "Create a new curriculum")
-    // @RolesAllowed({"COORDINATOR", "PROFESSOR"}) // Temporariamente desabilitado para validação manual
+    // @RolesAllowed({"COORDINATOR", "PROFESSOR"})
     public Response createCurriculum(CurriculumDTO curriculumDTO) {
         try {
             CurriculumDTO createdCurriculum = curriculumService.create(curriculumDTO);
@@ -70,7 +70,7 @@ public class CurriculumController {
     @PUT
     @Path("/{id}")
     @Operation(summary = "Update curriculum", description = "Update an existing curriculum")
-    // @RolesAllowed({"COORDINATOR", "PROFESSOR"}) // Temporariamente desabilitado para validação manual
+    // @RolesAllowed({"COORDINATOR", "PROFESSOR"})
     public Response updateCurriculum(@PathParam("id") Long id, CurriculumDTO curriculumDTO) {
         try {
             CurriculumDTO updatedCurriculum = curriculumService.update(id, curriculumDTO);
@@ -90,7 +90,7 @@ public class CurriculumController {
     @DELETE
     @Path("/{id}")
     @Operation(summary = "Delete curriculum", description = "Delete a curriculum by ID")
-    // @RolesAllowed({"COORDINATOR", "PROFESSOR"}) // Temporariamente desabilitado para validação manual
+    // @RolesAllowed({"COORDINATOR", "PROFESSOR"})
     public Response deleteCurriculum(@PathParam("id") Long id) {
         try {
             boolean deleted = curriculumService.delete(id);
@@ -110,7 +110,7 @@ public class CurriculumController {
     @GET
     @Path("/student/{studentId}")
     @Operation(summary = "Get curricula by student", description = "Retrieve all curricula for a specific student")
-    // @RolesAllowed({"COORDINATOR", "PROFESSOR", "STUDENT"}) // Temporariamente desabilitado para validação manual
+    // @RolesAllowed({"COORDINATOR", "PROFESSOR", "STUDENT"})
     public Response getCurriculaByStudent(@PathParam("studentId") Long studentId) {
         try {
             List<CurriculumDTO> curricula = curriculumService.findByStudentId(studentId);

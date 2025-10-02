@@ -22,7 +22,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOCreation() {
-        // Verifica se o DTO é criado corretamente
         assertNotNull(userDTO);
         assertNull(userDTO.id);
         assertNull(userDTO.name);
@@ -36,7 +35,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOConstructor() {
-        // Testa o construtor com parâmetros
         LocalDateTime now = LocalDateTime.now();
         UserDTO dto = new UserDTO(1L, "João Silva", "joao@academy.com", "password123", UserRole.STUDENT, true);
         
@@ -50,7 +48,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOSettersAndGetters() {
-        // Testa setters e getters
         userDTO.setId(1L);
         userDTO.setName("João Silva");
         userDTO.setEmail("joao@academy.com");
@@ -68,7 +65,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOEquals() {
-        // Testa o método equals
         UserDTO dto1 = new UserDTO();
         dto1.id = 1L;
         dto1.email = "test@academy.com";
@@ -89,7 +85,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOHashCode() {
-        // Testa o método hashCode
         UserDTO dto1 = new UserDTO();
         dto1.id = 1L;
         dto1.email = "test@academy.com";
@@ -103,7 +98,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOToString() {
-        // Testa o método toString
         userDTO.id = 1L;
         userDTO.name = "João Silva";
         userDTO.email = "joao@academy.com";
@@ -121,7 +115,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOWithTimestamps() {
-        // Testa com timestamps
         LocalDateTime now = LocalDateTime.now();
         userDTO.createdAt = now;
         userDTO.updatedAt = now.plusHours(1);
@@ -132,7 +125,6 @@ class UserDTOTest {
 
     @Test
     void testUserDTOWithAllRoles() {
-        // Testa com todos os tipos de role
         userDTO.setRole(UserRole.ADMIN);
         assertEquals(UserRole.ADMIN, userDTO.getRole());
 

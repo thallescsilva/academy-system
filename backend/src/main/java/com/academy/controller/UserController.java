@@ -27,7 +27,7 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Users", description = "Operações relacionadas a usuários")
-// @RolesAllowed("ADMIN") // Temporariamente desabilitado para demonstração
+// @RolesAllowed("ADMIN")
 public class UserController {
 
     @Inject

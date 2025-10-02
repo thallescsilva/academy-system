@@ -121,7 +121,6 @@ public class UserService {
      */
     @Transactional
     public UserDTO create(@Valid UserDTO userDTO) {
-        // Verifica se o email já existe
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado: " + userDTO.getEmail());
         }
@@ -145,7 +144,7 @@ public class UserService {
         UserEntity entity = userRepository.findByIdOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado: " + id));
 
-        // Verifica se o email já existe para outro usuário
+ para outro usuário
         Optional<UserEntity> existingUser = userRepository.findByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && !existingUser.get().id.equals(id)) {
             throw new IllegalArgumentException("Email já cadastrado: " + userDTO.getEmail());

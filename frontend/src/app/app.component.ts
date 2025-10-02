@@ -155,8 +155,12 @@ export class AppComponent implements OnInit {
       this.currentUser = user;
     });
 
+    // Se autenticado e estiver na página de login, redirecionar para dashboard
+    if (isAuthenticated && this.router.url === '/login') {
+      this.router.navigate(['/dashboard']);
+    }
     // Se não estiver autenticado e não estiver na página de login, redirecionar para login
-    if (!isAuthenticated && this.router.url !== '/login') {
+    else if (!isAuthenticated && this.router.url !== '/login') {
       this.router.navigate(['/login']);
     }
   }

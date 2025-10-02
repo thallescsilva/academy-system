@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -20,7 +20,8 @@ import { Semester } from '../../../shared/models/course.model';
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule
   ],
   template: `
     <div class="semesters-container">
@@ -72,17 +73,17 @@ import { Semester } from '../../../shared/models/course.model';
               <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Ações</th>
                 <td mat-cell *matCellDef="let semester">
-                  <button mat-icon-button (click)="editSemester(semester)" matTooltip="Editar">
+                  <button mat-icon-button (click)="editSemester(semester)" matTooltip="Editar semestre">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button (click)="viewDisciplines(semester)" matTooltip="Ver Disciplinas">
+                  <button mat-icon-button (click)="viewDisciplines(semester)" matTooltip="Visualizar disciplinas do semestre">
                     <mat-icon>book</mat-icon>
                   </button>
                   <button mat-icon-button (click)="toggleSemesterStatus(semester)" 
-                          [matTooltip]="semester.active ? 'Desativar' : 'Ativar'">
+                          [matTooltip]="semester.active ? 'Desativar semestre' : 'Ativar semestre'">
                     <mat-icon>{{ semester.active ? 'block' : 'check_circle' }}</mat-icon>
                   </button>
-                  <button mat-icon-button (click)="deleteSemester(semester)" matTooltip="Excluir" color="warn">
+                  <button mat-icon-button (click)="deleteSemester(semester)" matTooltip="Excluir semestre" color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </td>
@@ -182,13 +183,13 @@ export class SemestersComponent implements OnInit {
   }
 
   createSemester(): void {
-    this.snackBar.open('Funcionalidade em desenvolvimento', 'Fechar', {
+    this.snackBar.open('Funcionalidade de criação de semestre em desenvolvimento', 'Fechar', {
       duration: 3000
     });
   }
 
   editSemester(semester: Semester): void {
-    this.snackBar.open(`Editando semestre: ${semester.number}º`, 'Fechar', {
+    this.snackBar.open(`Editando semestre: ${semester.number}º semestre`, 'Fechar', {
       duration: 3000
     });
   }
